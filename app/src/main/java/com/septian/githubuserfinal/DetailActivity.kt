@@ -1,8 +1,10 @@
 package com.septian.githubuserfinal
 
 import android.content.Intent
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -10,13 +12,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.contentValuesOf
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.septian.githubuserfinal.adapters.ViewPagerAdapter
+import com.septian.githubuserfinal.db.DatabaseContract
+import com.septian.githubuserfinal.db.DatabaseContract.UserColumns.Companion.CONTENT_URI
 import com.septian.githubuserfinal.databinding.ActivityDetailBinding
 import com.septian.githubuserfinal.dataclass.User
-import com.septian.githubuserfinal.adapters.ViewPagerAdapter
-import com.septian.githubuserm.database.DatabaseContract
-import com.septian.githubuserm.database.DatabaseContract.UserColumns.Companion.CONTENT_URI
-import com.septian.githubuserm.database.UserHelper
 import com.septian.githubuserfinal.viewmodel.DetailViewModel
+import com.septian.githubuserfinal.db.UserHelper
 
 class DetailActivity : AppCompatActivity() {
     companion object {
@@ -37,6 +41,13 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
+        val viewPagerAdapter = ViewPagerAdapter(this, supportFragmentManager)
+        viewPagerAdapter.username = dataIntent?.login
+        binding.viewPager.adapter = viewPagerAdapter
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
+
         dataIntent = intent.getParcelableExtra(EXTRA_USER)
         val id = dataIntent?.id
         val username = dataIntent?.id
@@ -44,11 +55,6 @@ class DetailActivity : AppCompatActivity() {
         val avatar = dataIntent?.avatar
 
         dataIntent?.let { setData -> setDetailData(setData) }
-
-        val viewPagerAdapter = ViewPagerAdapter(this, supportFragmentManager)
-        viewPagerAdapter.username = dataIntent?.login
-        binding.viewPager.adapter = viewPagerAdapter
-        binding.tabLayout.setupWithViewPager(binding.viewPager)
 
 
         supportActionBar?.title = "${dataIntent?.login} detail"
@@ -62,13 +68,26 @@ class DetailActivity : AppCompatActivity() {
             if (!statusFavorite){
                 val values = contentValuesOf(
                     DatabaseContract.UserColumns._ID to id,
-                    DatabaseContract.UserColumns.COLUMN_NAME_USERNAME to username,
-                    DatabaseContract.UserColumns.COLUMN_NAME_HTML_URL to html,
-                    DatabaseContract.UserColumns.COLUMN_NAME_AVATAR_URL to avatar
+                    DatabaseContract.UserColumns.USERNAME to username,
+                    DatabaseContract.UserColumns.HTML to html,
+                    DatabaseContract.UserColumns.AVATAR to avatar
 
                 )
-                contentResolver.insert(CONTENT_URI)
+                contentResolver.insert(CONTENT_URI,values)
+                statusFavorite = !statusFavorite
+                setStatusFavorite(statusFavorite)
+
+            }else{
+                uriWithId = Uri.parse("$CONTENT_URI/$id")
+                contentResolver.delete(uriWithId,null,null)
+                statusFavorite = !statusFavorite
+                setStatusFavorite(statusFavorite)
             }
+        }
+        val cursor: Cursor = userHelper.queryById(id.toString())
+        if (cursor.moveToNext()){
+            statusFavorite = !statusFavorite
+            setStatusFavorite(statusFavorite)
         }
 
     }
@@ -108,6 +127,7 @@ class DetailActivity : AppCompatActivity() {
         Toast.makeText(this, "Kamu memilih ${user.login}", Toast.LENGTH_SHORT).show()
     }
 
+
     private fun showLoading(state: Boolean) = if (state) {
         binding.progressDetail.visibility = View.VISIBLE
     } else {
@@ -124,6 +144,7 @@ class DetailActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.homeBtn -> {
                 val i = Intent(this, MainActivity::class.java)
+                RequestOptions.fitCenterTransform()
                 startActivity(i)
                 true
             }
@@ -135,8 +156,12 @@ class DetailActivity : AppCompatActivity() {
     private fun setStatusFavorite(statusFavorite: Boolean) {
         if (statusFavorite) {
             binding.btnFav.setImageResource(R.drawable.ic_baseline_favorite_24)
+            Toast.makeText(this, "Telah Dihapus dari Favorite", Toast.LENGTH_SHORT)
+                .show()
+
         } else {
             binding.btnFav.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            Toast.makeText(this, "Telah Ditambahkan ke Favorite", Toast.LENGTH_SHORT).show()
         }
     }
 }

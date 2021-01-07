@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import com.septian.githubuserfinal.BuildConfig
-
 import com.septian.githubuserfinal.dataclass.User
 import cz.msebera.android.httpclient.Header
 import org.json.JSONObject
@@ -29,9 +28,9 @@ class DetailViewModel : ViewModel() {
 
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(
-                    statusCode: Int,
-                    headers: Array<out Header>?,
-                    responseBody: ByteArray
+                statusCode: Int,
+                headers: Array<out Header>?,
+                responseBody: ByteArray
             ) {
                 val result = String(responseBody)
                 try {
@@ -58,10 +57,10 @@ class DetailViewModel : ViewModel() {
             }
 
             override fun onFailure(
-                    statusCode: Int,
-                    headers: Array<out Header>?,
-                    responseBody: ByteArray?,
-                    error: Throwable?
+                statusCode: Int,
+                headers: Array<out Header>?,
+                responseBody: ByteArray?,
+                error: Throwable?
             ) {
                 val errorMessage = when (statusCode) {
                     401 -> "$statusCode : Bad Request"
