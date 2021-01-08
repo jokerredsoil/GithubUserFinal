@@ -156,12 +156,12 @@ class DetailActivity : AppCompatActivity() {
     private fun setStatusFavorite(statusFavorite: Boolean) {
         if (statusFavorite) {
             binding.btnFav.setImageResource(R.drawable.ic_baseline_favorite_24)
-            Toast.makeText(this, "Telah Dihapus dari Favorite", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(this, "${dataIntent?.login}Telah Ditambahkan ke Favorite", Toast.LENGTH_SHORT).show()
 
         } else {
             binding.btnFav.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-            Toast.makeText(this, "Telah Ditambahkan ke Favorite", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "${dataIntent?.login}Telah Dihapus dari Favorite", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 }

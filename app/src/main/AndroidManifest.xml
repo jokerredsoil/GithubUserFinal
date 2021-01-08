@@ -4,6 +4,8 @@
     package="com.septian.githubuserfinal">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <permission
         android:name="com.septian.githubuserfinal.READ_DATABASE"
@@ -12,8 +14,7 @@
         android:name="com.septian.githubuserfinal.WRITE_DATABASE"
         android:protectionLevel="normal" />
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+
 
     <application
         android:allowBackup="true"

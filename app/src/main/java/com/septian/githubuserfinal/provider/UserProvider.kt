@@ -37,11 +37,13 @@ class UserProvider : ContentProvider() {
         uri: Uri, projection: Array<String>?, selection: String?,
         selectionArgs: Array<String>?, sortOrder: String?
     ): Cursor? {
-        return when (sUriMatcher.match(uri)) {
-            USER -> userHelper.queryAll()
-            USER_ID -> userHelper.queryById(uri.lastPathSegment.toString())
-            else -> null
+        val cursor: Cursor?
+        when (sUriMatcher.match(uri)) {
+            USER -> cursor = userHelper.queryAll()
+            USER_ID -> cursor = userHelper.queryById(uri.lastPathSegment.toString())
+            else -> cursor = null
         }
+        return cursor
     }
 
     override fun getType(uri: Uri): String? {
@@ -70,6 +72,7 @@ class UserProvider : ContentProvider() {
             else -> 0
         }
         context?.contentResolver?.notifyChange(CONTENT_URI, null)
+
         return deleted
     }
 

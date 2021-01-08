@@ -3,9 +3,11 @@ package com.septian.githubuserfinal.db
 import android.net.Uri
 import android.provider.BaseColumns
 
+
 object DatabaseContract {
     const val AUTHORITY = "com.septian.githubuserfinal"
     const val SCHEME = "content"
+
     internal class UserColumns : BaseColumns {
         companion object {
             const val TABLE_NAME = "user"

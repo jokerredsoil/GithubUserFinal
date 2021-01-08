@@ -3,17 +3,18 @@ package com.septian.githubuserfinal.db
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import com.septian.githubuserfinal.db.DatabaseContract.UserColumns.Companion.TABLE_NAME
 import com.septian.githubuserfinal.db.DatabaseContract.UserColumns.Companion._ID
-import java.sql.SQLException
 import kotlin.jvm.Throws
 
 
 class UserHelper(context: Context) {
+
     companion object {
+        private lateinit var dataBaseHelper: DatabaseHelper
         private const val DATABASE_TABLE = TABLE_NAME
-        private lateinit var databaseHelper: DatabaseHelper
         private var INSTANCE: UserHelper? = null
 
         fun getInstance(context: Context): UserHelper =
@@ -24,16 +25,16 @@ class UserHelper(context: Context) {
 
     }
     init {
-        databaseHelper = DatabaseHelper(context)
+        dataBaseHelper = DatabaseHelper(context)
     }
 
     @Throws(SQLException::class)
     fun open() {
-        database = databaseHelper.writableDatabase
+        database = dataBaseHelper.writableDatabase
     }
 
     fun close() {
-        databaseHelper.close()
+        dataBaseHelper.close()
         if (database.isOpen) {
             database.close()
         }
@@ -47,9 +48,7 @@ class UserHelper(context: Context) {
             null,
             null,
             null,
-            "$_ID ASC"
-
-        )
+            "$_ID ASC")
     }
 
     fun queryById(id: String): Cursor {
@@ -61,15 +60,18 @@ class UserHelper(context: Context) {
             null,
             null,
             null,
-            null
-        )
+            null)
     }
 
     fun insert(values: ContentValues?): Long {
         return database.insert(DATABASE_TABLE, null, values)
     }
 
-   fun deleteById(id: String): Int {
+    fun update(id: String, values: ContentValues?): Int {
+        return database.update(DATABASE_TABLE, values, "$_ID = ?", arrayOf(id))
+    }
+
+    fun deleteById(id: String): Int {
         return database.delete(DATABASE_TABLE, "$_ID = '$id'", null)
     }
 }
