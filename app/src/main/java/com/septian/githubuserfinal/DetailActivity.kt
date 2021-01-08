@@ -41,21 +41,23 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewPagerAdapter = ViewPagerAdapter(this, supportFragmentManager)
-        viewPagerAdapter.username = dataIntent?.login
-        binding.viewPager.adapter = viewPagerAdapter
-        binding.tabLayout.setupWithViewPager(binding.viewPager)
-
         dataIntent = intent.getParcelableExtra(EXTRA_USER)
         val id = dataIntent?.id
         val username = dataIntent?.login.toString()
         val html = dataIntent?.html.toString()
         val avatar = dataIntent?.avatar.toString()
 
+        val viewPagerAdapter = ViewPagerAdapter(this, supportFragmentManager)
+        viewPagerAdapter.username = username
+        binding.viewPager.adapter = viewPagerAdapter
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
+
+
+
         dataIntent?.let { setData -> setDetailData(setData) }
 
 
-        supportActionBar?.title = "${dataIntent?.login} detail"
+        supportActionBar?.title = "$username detail"
         showLoading(true)
 //set
         userHelper = UserHelper(applicationContext)
@@ -77,7 +79,7 @@ class DetailActivity : AppCompatActivity() {
                 setStatusFavorite(statusFavorite)
                 Toast.makeText(
                     this,
-                    "${dataIntent?.login} Telah Ditambahkan ke Favorite",
+                    "$username Telah Ditambahkan ke Favorite",
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
@@ -87,7 +89,7 @@ class DetailActivity : AppCompatActivity() {
                 setStatusFavorite(statusFavorite)
                 Toast.makeText(
                     this,
-                    "${dataIntent?.login} Telah Dihapus dari Favorite",
+                    "$username Telah Dihapus dari Favorite",
                     Toast.LENGTH_SHORT
                 ).show()
             }

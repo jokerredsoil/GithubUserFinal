@@ -71,7 +71,7 @@
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_below="@+id/txtUsername"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:text="@string/zero"
         android:textColor="@android:color/black"
         android:textSize="15sp"
@@ -87,7 +87,7 @@
         android:layout_height="20dp"
         android:layout_below="@+id/txtUsername"
         android:layout_alignParentEnd="true"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:text="@string/zero"
         android:textColor="@android:color/black"
         android:textSize="15sp"
@@ -195,18 +195,18 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtCompany"
-        app:layout_constraintVertical_bias="0.19999999" />
+        app:layout_constraintVertical_bias="0.13" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -222,12 +222,12 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:background="@null"
+        android:contentDescription="@string/favorite"
         android:src="@drawable/ic_baseline_favorite_border_24"
-        app:layout_constraintBottom_toTopOf="@+id/tabLayout"
+        app:layout_constraintBottom_toTopOf="@+id/txtFollowing"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtCompany"
-        app:srcCompat="@drawable/ic_baseline_favorite_24"
-        android:contentDescription="@string/favorite" />
+        app:srcCompat="@drawable/ic_baseline_favorite_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

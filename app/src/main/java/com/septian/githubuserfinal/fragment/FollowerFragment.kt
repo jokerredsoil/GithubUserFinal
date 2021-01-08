@@ -35,8 +35,8 @@ class FollowerFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFollowerBinding.inflate(inflater, container, false)
         return binding.root
@@ -55,7 +55,10 @@ class FollowerFragment : Fragment() {
         listMainAdapter.notifyDataSetChanged()
         binding.rvFollowers.adapter = listMainAdapter
 
-        followerViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(FollowerViewModel::class.java)
+        followerViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(FollowerViewModel::class.java)
         followerViewModel.setFollower(username)
         followerViewModel.getFollowers().observe(viewLifecycleOwner, { users ->
             if ((users != null) && (users.size != 0)) {
