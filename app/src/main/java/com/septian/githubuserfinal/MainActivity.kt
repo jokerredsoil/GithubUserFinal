@@ -32,7 +32,10 @@ class MainActivity : AppCompatActivity() {
 
         mainAdapter = ListMainAdapter()
         mainAdapter.notifyDataSetChanged()
-        mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(MainViewModel::class.java)
 
         supportActionBar?.title = "Github User Search"
         searchUserList()
@@ -85,11 +88,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == R.id.favBtnMain) {
-            val i = Intent(this, FavoriteActivity::class.java)
-            startActivity(i)
-            true
-        } else true
+        when (item.itemId) {
+            R.id.favBtnMain-> {
+                val i = Intent(this, FavoriteActivity::class.java)
+                startActivity(i)
+                return true
+            }
+            R.id.settingBtn -> {
+                val intent = Intent(this, SettingActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+
+        }
+        return true
     }
 
 //miscellaneous

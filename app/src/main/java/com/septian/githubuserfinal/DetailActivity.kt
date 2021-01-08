@@ -153,6 +153,11 @@ class DetailActivity : AppCompatActivity() {
                 startActivity(i)
                 return true
             }
+            R.id.settingBtn -> {
+                val intent = Intent(this, SettingActivity::class.java)
+                startActivity(intent)
+                return true
+            }
 
         }
         return true
