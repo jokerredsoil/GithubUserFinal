@@ -76,10 +76,8 @@ class FavoriteActivity : AppCompatActivity() {
                 startActivity(i)
                 return true
             }
-            R.id.favBtn -> {
-                val i = Intent(this, FavoriteActivity::class.java)
-                startActivity(i)
-                return true
+            R.id.favBtn ->{
+                Toast.makeText(this, "i love you too",Toast.LENGTH_SHORT).show()
             }
             R.id.settingBtn -> {
                 val intent = Intent(this, SettingActivity::class.java)
