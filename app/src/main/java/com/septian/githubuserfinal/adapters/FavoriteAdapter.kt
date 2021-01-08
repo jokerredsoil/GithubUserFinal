@@ -14,7 +14,7 @@ import com.septian.githubuserfinal.R
 import com.septian.githubuserfinal.databinding.ItemRowUserBinding
 import com.septian.githubuserfinal.dataclass.User
 
-class FavoriteAdapter (private val activity: Activity):
+class FavoriteAdapter(private val activity: Activity) :
     RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
 
     var listFav = ArrayList<User>()
@@ -38,7 +38,8 @@ class FavoriteAdapter (private val activity: Activity):
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_row_user,parent,false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_row_user, parent, false)
         return FavoriteViewHolder(view)
     }
 
@@ -64,8 +65,8 @@ class FavoriteAdapter (private val activity: Activity):
                     CustomOnItemClickListener(adapterPosition,
                         object : CustomOnItemClickListener.OnitemClickCallback {
                             override fun onItemClicked(view: View, position: Int) {
-                                val intent = Intent(activity,DetailActivity::class.java)
-                                intent.putExtra(DetailActivity.EXTRA_USER,user)
+                                val intent = Intent(activity, DetailActivity::class.java)
+                                intent.putExtra(DetailActivity.EXTRA_USER, user)
                                 activity.startActivity(intent)
                             }
 
@@ -74,8 +75,4 @@ class FavoriteAdapter (private val activity: Activity):
             }
         }
     }
-
-
-
-
 }

@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <SwitchPreference
         android:defaultValue="false"
-        android:icon="@drawable/ic_baseline_notifications_24"
+        android:icon="@drawable/ic_baseline_notifications_blk24"
         android:key="@string/notification"
         android:title="@string/reminder"/>
 

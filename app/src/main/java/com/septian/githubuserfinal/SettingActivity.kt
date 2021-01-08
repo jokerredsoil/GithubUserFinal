@@ -1,7 +1,7 @@
 package com.septian.githubuserfinal
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.septian.githubuserfinal.fragment.MyPreferenceFragment
 
 class SettingActivity : AppCompatActivity() {
@@ -12,6 +12,9 @@ class SettingActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .add(R.id.settingActivity,MyPreferenceFragment())
             .commit()
+
+        supportActionBar?.title = "Reminder"
+
 
 
 
