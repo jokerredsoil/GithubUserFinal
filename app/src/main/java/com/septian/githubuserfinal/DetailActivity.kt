@@ -15,12 +15,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.septian.githubuserfinal.adapters.ViewPagerAdapter
-import com.septian.githubuserfinal.db.DatabaseContract
-import com.septian.githubuserfinal.db.DatabaseContract.UserColumns.Companion.CONTENT_URI
 import com.septian.githubuserfinal.databinding.ActivityDetailBinding
 import com.septian.githubuserfinal.dataclass.User
-import com.septian.githubuserfinal.viewmodel.DetailViewModel
+import com.septian.githubuserfinal.db.DatabaseContract
+import com.septian.githubuserfinal.db.DatabaseContract.UserColumns.Companion.CONTENT_URI
 import com.septian.githubuserfinal.db.UserHelper
+import com.septian.githubuserfinal.viewmodel.DetailViewModel
 
 class DetailActivity : AppCompatActivity() {
     companion object {
@@ -41,8 +41,6 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         val viewPagerAdapter = ViewPagerAdapter(this, supportFragmentManager)
         viewPagerAdapter.username = dataIntent?.login
         binding.viewPager.adapter = viewPagerAdapter
@@ -50,22 +48,23 @@ class DetailActivity : AppCompatActivity() {
 
         dataIntent = intent.getParcelableExtra(EXTRA_USER)
         val id = dataIntent?.id
-        val username = dataIntent?.id
-        val html = dataIntent?.html
-        val avatar = dataIntent?.avatar
+        val username = dataIntent?.login.toString()
+        val html = dataIntent?.html.toString()
+        val avatar = dataIntent?.avatar.toString()
 
         dataIntent?.let { setData -> setDetailData(setData) }
 
 
         supportActionBar?.title = "${dataIntent?.login} detail"
         showLoading(true)
-
-        userHelper = UserHelper.getInstance(applicationContext)
+//set
+        userHelper = UserHelper(applicationContext)
         userHelper.open()
 
         var statusFavorite = false
-        binding.btnFav.setOnClickListener{
-            if (!statusFavorite){
+        setStatusFavorite(statusFavorite)
+        binding.btnFav.setOnClickListener {
+            if (!statusFavorite) {
                 val values = contentValuesOf(
                     DatabaseContract.UserColumns._ID to id,
                     DatabaseContract.UserColumns.USERNAME to username,
@@ -73,20 +72,30 @@ class DetailActivity : AppCompatActivity() {
                     DatabaseContract.UserColumns.AVATAR to avatar
 
                 )
-                contentResolver.insert(CONTENT_URI,values)
+                contentResolver.insert(CONTENT_URI, values)
                 statusFavorite = !statusFavorite
                 setStatusFavorite(statusFavorite)
-
-            }else{
+                Toast.makeText(
+                    this,
+                    "${dataIntent?.login} Telah Ditambahkan ke Favorite",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
                 uriWithId = Uri.parse("$CONTENT_URI/$id")
-                contentResolver.delete(uriWithId,null,null)
+                contentResolver.delete(uriWithId, null, null)
                 statusFavorite = !statusFavorite
                 setStatusFavorite(statusFavorite)
+                Toast.makeText(
+                    this,
+                    "${dataIntent?.login} Telah Dihapus dari Favorite",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
+
         val cursor: Cursor = userHelper.queryById(id.toString())
-        if (cursor.moveToNext()){
-            statusFavorite = !statusFavorite
+        if (cursor.moveToNext()) {
+            statusFavorite = true
             setStatusFavorite(statusFavorite)
         }
 
@@ -123,6 +132,33 @@ class DetailActivity : AppCompatActivity() {
         })
     }
 
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.option_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.homeBtn -> {
+                val i = Intent(this, MainActivity::class.java)
+                startActivity(i)
+                return true
+            }
+            R.id.favBtn -> {
+                val i = Intent(this, FavoriteActivity::class.java)
+                startActivity(i)
+                return true
+            }
+
+        }
+        return true
+    }
+
+
+//    miscellaneous
+
     private fun showSelectedUser(user: User) {
         Toast.makeText(this, "Kamu memilih ${user.login}", Toast.LENGTH_SHORT).show()
     }
@@ -134,34 +170,13 @@ class DetailActivity : AppCompatActivity() {
         binding.progressDetail.visibility = View.GONE
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.option_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.homeBtn -> {
-                val i = Intent(this, MainActivity::class.java)
-                RequestOptions.fitCenterTransform()
-                startActivity(i)
-                true
-            }
-            else -> true
-        }
-    }
-
-
     private fun setStatusFavorite(statusFavorite: Boolean) {
         if (statusFavorite) {
             binding.btnFav.setImageResource(R.drawable.ic_baseline_favorite_24)
-            Toast.makeText(this, "${dataIntent?.login}Telah Ditambahkan ke Favorite", Toast.LENGTH_SHORT).show()
 
         } else {
             binding.btnFav.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-            Toast.makeText(this, "${dataIntent?.login}Telah Dihapus dari Favorite", Toast.LENGTH_SHORT)
-                .show()
+
         }
     }
 }

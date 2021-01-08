@@ -7,18 +7,17 @@ import com.septian.githubuserfinal.db.DatabaseContract
 
 object MappingHelper {
     private val TAG = MappingHelper::class.java.simpleName
-    fun mapCursorToArrayList(userCursor: Cursor?): ArrayList<User> {
+    fun mapCursorToArrayList(cursor: Cursor?): ArrayList<User> {
         val list = ArrayList<User>()
-
-        userCursor?.apply {
+        cursor?.apply {
             while (moveToNext()) {
-                val user = User()
-                user.id = getInt(getColumnIndexOrThrow(DatabaseContract.UserColumns._ID))
-                user.login = getString(getColumnIndexOrThrow(DatabaseContract.UserColumns.USERNAME))
-                user.html = getString(getColumnIndexOrThrow(DatabaseContract.UserColumns.HTML))
-                user.avatar = getString(getColumnIndexOrThrow(DatabaseContract.UserColumns.AVATAR))
-                list.add(User())
-                Log.d(TAG, user.toString())
+
+                val id = getInt(getColumnIndexOrThrow(DatabaseContract.UserColumns._ID))
+                val login = getString(getColumnIndexOrThrow(DatabaseContract.UserColumns.USERNAME))
+                val html = getString(getColumnIndexOrThrow(DatabaseContract.UserColumns.HTML))
+                val avatar = getString(getColumnIndexOrThrow(DatabaseContract.UserColumns.AVATAR))
+                list.add(User(id,login,null,html,avatar))
+                Log.d(TAG, cursor.toString())
             }
         }
         return list

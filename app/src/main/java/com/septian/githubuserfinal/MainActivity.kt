@@ -80,19 +80,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.option_menu, menu)
+        inflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.homeBtn -> {
-                val i = Intent(this, MainActivity::class.java)
-                startActivity(i)
-                true
-            }
-            else -> true
-        }
+        return if (item.itemId == R.id.favBtnMain) {
+            val i = Intent(this, FavoriteActivity::class.java)
+            startActivity(i)
+            true
+        } else true
     }
 
 //miscellaneous

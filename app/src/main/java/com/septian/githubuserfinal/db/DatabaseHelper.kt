@@ -12,7 +12,7 @@ internal class DatabaseHelper(context: Context) :
         private const val DATABASE_NAME = "db_user"
         private const val DATABASE_VERSION = 1
         private const val SQL_CREATE_TABLE_USER = "CREATE TABLE $TABLE_NAME" +
-                "(${DatabaseContract.UserColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "(${DatabaseContract.UserColumns._ID} INTEGER PRIMARY KEY," +
                 "${DatabaseContract.UserColumns.USERNAME} TEXT NOT NULL UNIQUE," +
                 "${DatabaseContract.UserColumns.HTML} TEXT NOT NULL ," +
                 "${DatabaseContract.UserColumns.AVATAR} TEXT NOT NULL)"
